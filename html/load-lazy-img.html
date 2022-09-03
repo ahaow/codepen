@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片懒加载</title>
+</head>
+<body>
+    <div class="item-container">
+        <p>新闻标题</p>
+        <img src="http://ysclass.net/a/img/avatar.9be9381e.svg" data-src="https://ali.oss.sh.ysclass.net//upload/192/3a78ed8c45254394bbb15e4dfc79c5d2.png" />
+    </div>
+
+    <div class="item-container">
+        <p>新闻标题</p>
+        <img src="http://ysclass.net/a/img/avatar.9be9381e.svg" data-src="https://ali.oss.sh.ysclass.net//upload/192/3a78ed8c45254394bbb15e4dfc79c5d2.png" />
+    </div>
+
+    <div class="item-container">
+        <p>新闻标题</p>
+        <img src="http://ysclass.net/a/img/avatar.9be9381e.svg" data-src="https://ali.oss.sh.ysclass.net//upload/192/3a78ed8c45254394bbb15e4dfc79c5d2.png" />
+    </div>
+
+    <div class="item-container">
+        <p>新闻标题</p>
+        <img src="http://ysclass.net/a/img/avatar.9be9381e.svg" data-src="https://ali.oss.sh.ysclass.net//upload/192/3a78ed8c45254394bbb15e4dfc79c5d2.png" />
+    </div>
+    
+    <div class="item-container">
+        <p>新闻标题</p>
+        <img src="http://ysclass.net/a/img/avatar.9be9381e.svg" data-src="https://ali.oss.sh.ysclass.net//upload/192/3a78ed8c45254394bbb15e4dfc79c5d2.png" />
+    </div>
+
+    <div class="item-container">
+        <p>新闻标题</p>
+        <img src="http://ysclass.net/a/img/avatar.9be9381e.svg" data-src="https://ali.oss.sh.ysclass.net//upload/192/3a78ed8c45254394bbb15e4dfc79c5d2.png" />
+    </div>
+
+    <div class="item-container">
+        <p>新闻标题</p>
+        <img src="http://ysclass.net/a/img/avatar.9be9381e.svg" data-src="https://ali.oss.sh.ysclass.net//upload/192/3a78ed8c45254394bbb15e4dfc79c5d2.png" />
+    </div>
+
+    <div class="item-container">
+        <p>新闻标题</p>
+        <img src="http://ysclass.net/a/img/avatar.9be9381e.svg" data-src="https://ali.oss.sh.ysclass.net//upload/192/3a78ed8c45254394bbb15e4dfc79c5d2.png" />
+    </div>
+
+    <div class="item-container">
+        <p>新闻标题</p>
+        <img src="http://ysclass.net/a/img/avatar.9be9381e.svg" data-src="https://ali.oss.sh.ysclass.net//upload/192/3a78ed8c45254394bbb15e4dfc79c5d2.png" />
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <script>
+
+        /**
+         * 分析
+         * 
+         * 1. 定义 <img src="loading.png" data-scr="xxx.png" />
+         * 2. 页面滚动，图片露出来时，将data-src复制给src
+         * 3. 滚动要节流 
+        */
+
+        /**
+         * 获取图片定位
+         * 
+         * 1. 元素的位置: element.getBoundingClientRect()
+         * 2. 图片的top 和 window.innerHTML
+         * 
+        */
+
+        /**
+         * 注意节流，注意操作体验
+        */
+
+        function mapImagesAndTryLoad() {
+            const images = document.querySelectorAll('img[data-src]')
+            if (images.length === 0) return
+
+            images.forEach(img => {
+                const rect = img.getBoundingClientRect()
+                if (rect.top < window.innerHeight) {
+                    // 说明已经图片露出来了
+                    img.src = img.dataset.src
+                    // 移除 data-src 属性, 为了下次执行减少计算成本
+                    img.removeAttribute('data-src')
+                }
+            })
+        }
+
+        mapImagesAndTryLoad()
+
+        window.addEventListener('scroll', _.throttle(mapImagesAndTryLoad, 100))
+
+    </script>
+</body>
+</html>
