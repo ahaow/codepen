@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写getUrlParams</title>
+</head>
+<body>
+    <script>
+        /** URLSearchParams方法(有兼容问题) */
+        function getUrlSearchParams1() {
+            // 1. 创建一个URLSearchParams
+            const urlSearchParams = new URLSearchParams(window.location.search)
+            // 2. 把键值队列列表转换为一个对象
+            const params = Object.fromEntries(urlSearchParams.entries())
+        }
+
+
+        /** split方法 */
+        const href = "https://www.baidu.com/?name=carpe&age=28"
+
+        function getUrlSearchParams2(url) {
+            let res = {}
+            if (url.includes("?")) {
+                let str = url.split("?")[1]
+                let arr = str.split("&")
+                arr.forEach((item) => {
+                    let key = item.split("=")[0]
+                    let value = item.split("=")[1]
+                    res[key] = value
+                })
+            }
+            return res
+        }
+        const obj = getUrlSearchParams2(href)
+        console.log('obj', obj)
+
+    </script>
+</body>
+</html>

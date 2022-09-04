@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写LazyMan</title>
+</head>
+
+<body>
+    <script>
+        // 1. 支持sleep、eat两个方法
+        // 2. 支持链式调用
+        class LazyMan {
+            tasks = []
+            constructor(name) {
+                this.name = name
+                setTimeout(() => {
+                    this.next()
+                })
+            }
+
+            // next
+            next() {
+                const task = this.tasks.shift() // 取出当前 tasks 的第一个任务
+                if (task) task()
+
+            }
+
+            eat(food) {
+                const task = () => {
+                    console.info(`${this.name} eat ${food}`)
+                    // 立刻执行下一个
+                    this.next()
+                }
+                this.tasks.push(task)
+                // 支持链式调用
+                return this
+            }
+
+            sleep(seconds) {
+                const task = () => {
+                    console.info(`${this.name} 开始睡觉`)
+                    setTimeout(() => {
+                        console.info(`${this.name} 睡完了 ${seconds}s, 开始执行下一个任务`)
+                        this.next()
+                    }, seconds * 1000)
+                }
+                this.tasks.push(task)
+                // 支持链式调用
+                return this
+            }
+        }
+
+        const me = new LazyMan('古尔丹')
+        me.eat('火锅').eat('盐帮菜').sleep(2).eat('西瓜')
+    </script>
+
+
+</body>
+
+</html>
