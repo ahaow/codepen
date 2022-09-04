@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写new-instanceof</title>
+</head>
+<body>
+    <script>
+        function _new() {
+            // 1. 创建一个新对象
+            let obj = new Object()
+            // 2. 获取一个构造函数
+            let _constructor = [].shift.call(arguments)
+            // 3. 将构造函数的原型挂载到实例的原型上
+            obj.__proto__ = _constructor.prototype
+            // 4. 将构造函数的实例挂载到实例上
+            let result = _constructor.apply(obj, arguments)
+            // 5. 优先返回
+            return result instanceof Object ? result : obj
+        }
+
+        function _instanceof(L, R) {
+            let C = R.prototype
+            L = L.__proto__
+            while (true) {
+                if (L === null) {
+                    return false
+                }
+
+                if (C === L) {
+                    return true
+                }
+
+                L = L.__proto__
+            }
+        }
+
+        function Person(name, age) {
+            this.name = name
+            this.age = age
+        }
+
+        let p1 = _new(Person, 'carpe', 28)
+        let p2 = _new(Person, 'hanzo', 35)
+        console.log(p1, p2)
+        console.log(_instanceof(p1,Person), p2 instanceof Person)
+
+
+
+    </script>
+</body>
+</html>

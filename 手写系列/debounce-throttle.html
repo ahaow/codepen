@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写debounce-throttle</title>
+</head>
+<body>
+    <button id="btn">add</button>
+
+    <script>
+        const btn = document.getElementById("btn")
+
+        function debounce(fn, wait, immediate) {
+            let timeout = null
+            
+            return function(...args) {
+
+                if (timeout !== null) {
+                    clearTimeout(timeout)
+                }
+
+                if (!timeout && immediate) {
+                    fn.apply(this, args)
+                }
+
+                timeout = setTimeout(() => {
+                    fn.apply(this, args)
+                }, wait)
+            }
+        }
+
+
+        function throttle(fn, wait) {
+            let timeout = null
+            let last
+            return function(...args) {
+                let now = +new Date()
+                
+                if (last && now - last < wait) {
+
+                    if (timeout !== null) {
+                        clearTimeout(timeout)
+                    }
+
+                    timeout = setTimeout(() => {
+                        last = now
+                        fn.apply(this, args)
+                    }, wait)
+
+                } else {
+                    last = now
+                    fn.apply(this, args)
+                }
+            }
+        }
+
+        function ajax() {
+            console.log('ajax')
+        }
+
+        const debounceFn = debounce(ajax, 2000, true)
+        const throttleFn = throttle(ajax, 2000)
+        
+        btn.addEventListener("click", throttleFn)
+
+
+    </script>
+</body>
+</html>

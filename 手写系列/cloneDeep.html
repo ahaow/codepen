@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写cloneDeep</title>
+</head>
+<body>
+    <script>
+
+        function isObject(source) {
+            return typeof source === "object" && source !== null
+        }
+
+        function cloneDeep(source, hash = new WeakMap()) {
+            if (!isObject(source)) {
+                return source
+            }
+
+            if (hash.has(source)) {
+                return hash.get(source)
+            }
+
+            let target = Array.isArray(source) ? [] : {}
+            hash.set(source, target)
+
+            Reflect.ownKeys(source).forEach((key) => {
+                if (isObject(source[key])) {
+                    target[key] = cloneDeep(source[key], hash)
+                } else {
+                    target[key] = source[key]
+                }
+            })
+
+            return target
+        }
+
+        let target = {
+            str: 'string',
+            num: 123,
+            arr: [1,2,3],
+            obj: {
+                a: 'a',
+                b: 'c'
+            },
+            fn: function() {}
+        }
+
+
+        let clone = cloneDeep(target)
+        clone.arr = 66
+        clone.obj = 'object'
+        
+        console.log(target)
+        console.log(clone)
+
+
+    </script>
+</body>
+</html>

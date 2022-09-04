@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写EventBus</title>
+</head>
+<body>
+    <script>
+        class EventBus {
+            constructor() {
+                this.eventObj = {}  // 用于存储所有的订阅事件
+                this.eventId = 0 // 每个函数的ID
+            }
+
+            // 订阅事件,类似监听事件$on('key',()=>{})
+            on(name, callback) {
+                // 判断是否存在过
+                if (!this.eventObj[name]) {
+                    this.eventObj[name] = {}
+                }
+
+                // 定义当前回调函数的id
+                const id = this.eventId++
+                this.eventObj[name][id] = callback
+                return id
+            }
+
+            // 订阅事件，只会执行一次，为了方便，id上直接加上一个标识d
+            once(name, callback) {
+                if (!this.eventObj[name]) {
+                    this.eventObj[name] = {}
+                }
+
+                // 定义当前回调函数的id
+                const id = 'carpe' + this.eventId++
+                this.eventObj[name][id] = callback
+                return id
+            }
+
+            // 发布事件,类似于触发事件$emit('key')
+            emit(name, ...args) {
+                // 获取存储的事件回调函数数组
+                const eventList = this.eventObj[name]
+                for (const id in eventList) {
+                    eventList[id](...args)
+                    // 如果是订阅一次，则删除
+                    if (id.indexOf('carpe') !== -1) {
+                        delete eventList[id]
+                    }
+                }
+            }
+
+            // 取消订阅函数，类似于$off('key1', id)
+            off(name, id) {
+                // 删除存储在事件列表中的该事件
+                delete this.eventObj[name][id]
+                // 如果这是最后一个订阅者，则删除整个对象
+                if (!Object.keys(this.eventObj[name]).length) {
+                    delete this.eventObj[name]
+                }
+            }
+        }
+
+        const eventBus = new EventBus()
+        export default eventBus
+
+
+
+    </script>
+</body>
+</html>

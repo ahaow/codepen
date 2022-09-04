@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>array-flatten</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * 一级嵌套
+         * 
+         * 思路
+         *  1. 定义空数组 arr = []，遍历当前数组
+         *  2. 如果item非数组，则累加到 arr
+         *  3. 如果item是数组，则遍历之后累加到arr
+         * **/
+
+        function flatten1(arr) {
+            let res = []
+            arr.forEach((item) => {
+                if (Array.isArray(item)) {
+                    item.forEach(n => res.push(n))
+                } else {
+                    res.push(item)
+                }
+            })
+            return res
+        }
+
+        function flatten2(arr) {
+            let res = []
+            arr.forEach((item) => {
+                res = res.concat(item)
+            })
+            return res
+        }
+
+        const arr = [1, [2, 66, [3], 4], 5]
+        console.log(flatten1(arr))
+        console.log(flatten2(arr))
+
+
+        /**
+         * 彻底扁平化
+         * 
+         * 思路
+         *  1. 先实现一级扁平化，然后递归调用，直到全部扁平
+         * 
+        */
+
+        function flattenDeep1(arr) {
+            const res = []
+            arr.forEach(item => {
+                if (Array.isArray(item)) {
+                    const flatItem = flattenDeep1(item) // 递归
+                    flatItem.forEach(n => {
+                        res.push(n)
+                    })
+                } else {
+                    res.push(item)
+                }
+            })
+            return res
+        }
+
+
+        function flattenDeep2(arr) {
+            let res = []
+            arr.forEach(item => {
+                if (Array.isArray(item)) {
+                    const flatItem = flattenDeep2(item)
+                    res = res.concat(flatItem)
+                } else {
+                    res = res.concat(item)
+                }
+            })
+            return res
+        }
+
+        console.log(flattenDeep1(arr))
+        console.log(flattenDeep2(arr))
+
+        /**
+         * 其他
+         *  巧妙的解决方法：toString()
+         * 
+         *  const arr = [1,[2,3,4],[5]]
+            arr.toString() // 1,2,3,4,5
+            但是万一数组元素是 {x: 1} 等引用数据类型，就不行了
+        */
+
+    </script>
+</body>
+
+</html>
