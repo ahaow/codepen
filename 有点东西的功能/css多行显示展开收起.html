@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <style lang="scss">
+        @charset "UTF-8";
+
+        .clamp-text {
+            display: flex;
+            width: 295px;
+        }
+
+        .clamp-text .text {
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: justify;
+            position: relative;
+            line-height: 1.5;
+            max-height: 4.5em;
+            transition: 0.3s max-height;
+            color: #1a1a1a;
+        }
+
+        .clamp-text .text::before {
+            content: "";
+            height: calc(100% - 20px);
+            float: right;
+        }
+
+        .clamp-text .text::after {
+            content: "";
+            width: 999vw;
+            height: 999vw;
+            position: absolute;
+            box-shadow: inset calc(100px - 999vw) calc(30px - 999vw) 0 0 #fff;
+            margin-left: -100px;
+        }
+
+        .clamp-text .btn-label {
+            position: relative;
+            float: right;
+            clear: both;
+            margin-left: 20px;
+            font-size: 14px;
+            color: #007aff;
+            cursor: pointer;
+        }
+
+        .clamp-text .btn-label.all::after {
+            content: "全文";
+        }
+
+        .clamp-text .btn-label.open::after {
+            content: "展开";
+        }
+
+        .clamp-text .btn {
+            display: none;
+        }
+
+        .clamp-text .btn:checked+.text {
+            max-height: none;
+        }
+
+        .clamp-text .btn:checked+.text::after {
+            visibility: hidden;
+        }
+
+        .clamp-text .btn:checked+.text .btn-label::before {
+            visibility: hidden;
+        }
+
+        .clamp-text .btn:checked+.text .btn-label::after {
+            content: "收起";
+        }
+
+        .clamp-text .btn-label::before {
+            content: "...";
+            position: absolute;
+            left: -5px;
+            color: #333;
+            transform: translateX(-100%);
+        }
+    </style>
+
+    <div class="clamp-text">
+        <input id="kaiser" class="btn" type="checkbox" />
+        <div class="text">
+            <label class="btn-label all" for="kaiser"></label>
+            早在今年7月，因花旗银行持有比亚迪股份突增2.25亿股，且这一数额与巴菲特创办的伯克希尔·哈撒韦能源公司所持比亚迪股份相契合，市能源公司所能源公司所能源
+        </div>
+    </div>
+</body>
+
+</html>
