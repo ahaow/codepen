@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>树转数组</title>
+</head>
+
+<body>
+    <script>
+        const obj = {
+            id: 1,
+            name: '部门A',
+            children: [
+                {
+                    id: 2,
+                    name: '部门B',
+                    children: [
+                        { id: 4, name: '部门D' },
+                        { id: 5, name: '部门E' },
+                    ]
+                },
+                {
+                    id: 3,
+                    name: '部门C',
+                    children: [
+                        { id: 6, name: '部门F' }
+                    ]
+                }
+            ]
+        };
+
+        function treeToArray(root) {
+            // Map映射
+            const nodeToParent = new Map()
+            
+            const arr = []
+
+            // 广度优先遍历 queue
+            const queue = []
+            queue.unshift(root) // 根节点入队
+
+            while (queue.length > 0) {
+                const currentNode = queue.pop() // 出队
+                if (currentNode == null) break
+
+                const { id, name, children = [] } = currentNode
+
+                // 创建数组item 并push
+                const parentNode = nodeToParent.get(currentNode)
+                const parentId = parentNode?.id || 0
+                const item = { id, name, parentId }
+                arr.push(item)
+
+                // 子节点入队继续遍历
+                children.forEach((child) => {
+                    // 映射parent
+                    nodeToParent.set(child, currentNode)
+
+                    // 入队
+                    queue.unshift(child)
+                })
+            }
+            return arr
+        }
+
+        console.log(treeToArray(obj))
+    </script>
+</body>
+
+</html>

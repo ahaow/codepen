@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取富文本里面的纯文本内容</title>
+</head>
+
+<body>
+    <script>
+        let str = '<p><code>uni-app</code> 完整支持 <code>Vue</code> 实例的生命周期，同时还新增页面生命周期</a>。<img src="https://ali.oss.sh.ysclass.net//upload/158/f443b606cf8c4409ac83ee212818eacc.png" width="700" /></p>'
+        document.body.innerHTML = str;
+
+        function getRichText(str) {
+            let text = str.replace(/<[^<>]+>/g, "").replace(/&nbsp;/gi, "")
+            return text.replace(/\s*/g, "")
+        }
+
+        console.log(getRichText(str))
+    </script>
+</body>
+
+</html>
